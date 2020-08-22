@@ -28,5 +28,5 @@ module.exports = {
   devtool: 'source-map',
   context: __dirname,
   target: 'web',
-  externals: ['react', 'react-helmet', 'crypto', 'buffer'],
+  externals: ['react', 'react-dom', 'react-helmet', 'crypto', 'buffer'],
 };
