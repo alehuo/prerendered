@@ -17,13 +17,13 @@ In this following MVP, Prerendered is initialized with its CSP Nonce middleware 
 import express from 'express';
 import React from 'react';
 
-import prerendered from 'prerendered/express';
+import { PrerenderedExpress } from 'prerendered';
 import { fetchPosts, fetchUser } from './api';
 import { Client } from './Client';
 
 const app = express();
 
-const prr = prerendered();
+const prr = PrerenderedExpress();
 app.use(prr.middleware({
   nonce: false,
 }));
@@ -32,6 +32,8 @@ app.get('/*', prr.render({
   posts: fetchPosts(),
   user: fetchUser(),
 })((data) => <Client posts={data.posts} user={data.user} />));
+
+app.listen(3000, () => console.log('Listening'));
 ```
 
 ## Proposals / ideas
