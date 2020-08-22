@@ -10,6 +10,7 @@ module.exports = {
     libraryTarget: 'umd',
     library: 'Prerendered',
     umdNamedDefine: true,
+    globalObject: 'this',
   },
   module: {
     rules: [
