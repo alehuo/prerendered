@@ -2,8 +2,8 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { RequestHandler, Request, Response } from 'express';
 import { Helmet } from 'react-helmet';
-import { Template } from './Template';
-import { cspNonceMiddleware } from '../middleware/cspNonceMiddleware';
+import { Template } from '../Template';
+import { cspNonceMiddleware } from './middleware/cspNonceMiddleware';
 
 type MiddlewareKeys = 'nonce'
 export type MiddlewareConfig = Partial<Record<MiddlewareKeys, boolean>>
