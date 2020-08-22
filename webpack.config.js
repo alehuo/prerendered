@@ -22,6 +22,7 @@ module.exports = {
         exclude: [
           /node_modules/,
           /example/,
+          /cli/,
         ],
         loader: 'ts-loader',
       },
