@@ -1,4 +1,5 @@
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -6,6 +7,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
+    libraryTarget: 'umd',
+    library: 'Prerendered',
+    umdNamedDefine: true,
   },
   module: {
     rules: [
@@ -24,9 +28,27 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      'prerendered/express': path.resolve(__dirname, 'src/prerendered/express'),
+    },
   },
   devtool: 'source-map',
   context: __dirname,
   target: 'web',
   externals: ['react', 'react-dom', 'react-helmet', 'crypto', 'buffer'],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        terserOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true,
+        },
+        sourceMap: true,
+        test: /\.js(\?.*)?$/i,
+      }),
+    ],
+  },
 };
