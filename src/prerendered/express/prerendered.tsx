@@ -46,13 +46,8 @@ function render<T extends object>(data: T) {
   return (getComponent: (data: WithPromisesResolved<T>) => React.ReactElement) => (req: Request, res: Response) => {
     resolveData(data).then((resolved) => {
       renderPage(getComponent(resolved))(req, res);
-    }).catch((err: unknown) => {
-      if (typeof err === 'string') {
-        res.status(500).send(err);
-      } else {
-        console.error(err);
-        res.sendStatus(500);
-      }
+    }).catch((err) => {
+      throw new Error(err);
     });
   };
 }
