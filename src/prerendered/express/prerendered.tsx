@@ -50,6 +50,7 @@ function render<T extends object>(data: T) {
       if (typeof err === 'string') {
         res.status(500).send(err);
       } else {
+        console.error(err);
         res.sendStatus(500);
       }
     });
