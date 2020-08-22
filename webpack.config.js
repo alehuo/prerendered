@@ -28,9 +28,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
-    alias: {
-      'prerendered/express': path.resolve(__dirname, 'src/prerendered/express'),
-    },
   },
   devtool: 'source-map',
   context: __dirname,
