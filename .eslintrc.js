@@ -29,6 +29,9 @@ module.exports = {
     'max-len': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
+    'react/prop-types': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'import/extensions': 'off',
   },
   settings: {
     'import/resolver': {

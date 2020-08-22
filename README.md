@@ -14,24 +14,24 @@ Prerendered is an SSR toolkit which handles the following:
 In this following MVP, Prerendered is initialized with its CSP Nonce middleware disabled. We fetch data from two REST APIs and pass them to the component that is being server-side rendered.
 
 ```jsx
-import React from "react"
-import express from "express"
-import prerendered from "prerendered/express"
+import express from 'express';
+import React from 'react';
 
-import Client from "src/demo/Client"
-import { fetchPosts, fetchUser } from "src/demo/api"
+import prerendered from '../prerendered/express/prerendered';
+import { fetchPosts, fetchUser } from './api';
+import { Client } from './Client';
 
-const app = express()
+const app = express();
 
-const prr = prerendered()
+const prr = prerendered();
 app.use(prr.middleware({
-    nonce: false
-}))
+  nonce: false,
+}));
 
-app.get('/*', prr.fetch({
-    posts: fetchPosts,
-    user: fetchUser
-}).then(data => <Client posts={data.posts} user={data.user}/>))
+app.get('/*', prr.render({
+  posts: fetchPosts(),
+  user: fetchUser(),
+})((data) => <Client posts={data.posts} user={data.user} />));
 ```
 
 ## Proposals / ideas
