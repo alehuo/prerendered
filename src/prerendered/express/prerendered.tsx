@@ -19,18 +19,14 @@ type PromiseValue<T> = T extends Promise<infer U> ? U : T
 type WithPromisesResolved<T> = { [K in keyof T]: PromiseValue<T[K]> }
 
 const resolveData = async <T extends object>(data: T): Promise<WithPromisesResolved<T>> => {
-  const resolved: any = {};
-  Object.keys(data).forEach(async (key) => {
-    // @ts-expect-error
-    if (data[key] instanceof Promise) {
-      // @ts-expect-error
-      const res = await data[key];
-      resolved[key] = res;
-    }
-    // @ts-expect-error
-    resolved[key] = data[key];
-  }, {});
-  return Promise.resolve(resolved);
+  const dataKeys = Object.keys(data);
+  // @ts-expect-error
+  const promises = dataKeys.map((key) => data[key]);
+  return Promise.all(promises).then((res) => res.reduce((prev, curr, i) => {
+    // eslint-disable-next-line no-param-reassign
+    prev[dataKeys[i]] = curr;
+    return prev;
+  }, {} as any));
 };
 
 function renderPage(cmpnt: React.ReactElement) {
@@ -45,7 +41,9 @@ function renderPage(cmpnt: React.ReactElement) {
 function render<T extends object>(data: T) {
   return (getComponent: (data: WithPromisesResolved<T>) => React.ReactElement) => (req: Request, res: Response) => {
     resolveData(data).then((resolved) => {
-      renderPage(getComponent(resolved))(req, res);
+      const cmpnt = getComponent(resolved);
+      const handler = renderPage(cmpnt);
+      handler(req, res);
     }).catch((err) => {
       throw new Error(err);
     });
