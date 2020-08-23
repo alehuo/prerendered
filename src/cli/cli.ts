@@ -68,18 +68,18 @@ program.command('build').description('Build prerendered')
         }
         if (stats.hasErrors()) {
           const info = stats.toJson();
-          console.error(info.errors);
+          info.errors.map(console.error);
         }
         throw new Error('Error! Webpack: Failed to compile');
       }
       const info = stats.toJson();
 
       if (stats.hasErrors()) {
-        console.error(info.errors);
+        info.errors.map(console.error);
       }
 
       if (stats.hasWarnings()) {
-        console.warn(info.warnings);
+        info.warnings.map(console.warn);
       }
 
       console.log('Webpack: Done!');
