@@ -1,7 +1,7 @@
 {
   "name": "prerendered",
   "version": "0.0.2",
-  "description": "",
+  "description": "A 'Swiss army knife' toolkit for building SSR-enabled React apps",
   "main": "dist/lib/index.js",
   "typings": "dist/lib/index.d.ts",
   "bin": {
