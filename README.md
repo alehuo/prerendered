@@ -44,3 +44,7 @@ app.listen(3000, () => console.log('Listening'));
 ### Hydration
 
 The component that is server-side rendered needs to be built with a build-tool (such as Webpack, Parcel or Rollup) and served as a static asset from the Prerendered application, to enable hydration. I will provide a JSON configuration file that contains a Webpack template which will work straight out of the box.
+
+## License
+
+MIT license. See LICENSE for details.
