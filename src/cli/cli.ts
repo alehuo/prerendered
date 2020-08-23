@@ -8,8 +8,6 @@ import { createConfig } from './webpack.prerendered';
 
 program.version('0.0.1');
 
-console.log('Prerendered CLI');
-
 interface PrerenderedConfig {
   client: {
     entryPoint: string;
@@ -60,17 +58,31 @@ program.command('build').description('Build prerendered')
     if (!fs.existsSync(path.join(process.cwd(), 'prerendered.json'))) {
       throw new Error('Error! prerendered.json not found. Please run `prerendered init`');
     }
+    console.log('Bunding app');
     const cfg: PrerenderedConfig = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prerendered.json')).toString('utf-8'));
     const webpackConfig = createConfig(cfg.client.entryPoint, program.debug);
     webpack(webpackConfig, (err, stats) => {
-      if (err || stats.hasErrors()) {
-        if (err.message) {
+      if (err !== null || stats.hasErrors()) {
+        if (err !== null && err.message) {
           console.error(err.message);
+        }
+        if (stats.hasErrors()) {
+          const info = stats.toJson();
+          console.error(info.errors);
         }
         throw new Error('Error! Webpack: Failed to compile');
       }
+      const info = stats.toJson();
+
+      if (stats.hasErrors()) {
+        console.error(info.errors);
+      }
+
+      if (stats.hasWarnings()) {
+        console.warn(info.warnings);
+      }
+
       console.log('Webpack: Done!');
-      console.log(stats.toString());
     });
   });
 
