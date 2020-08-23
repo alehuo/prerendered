@@ -6,3 +6,4 @@ interface TemplateProps {
 }
 export declare const Template: React.FC<TemplateProps>;
 export {};
+//# sourceMappingURL=Template.d.ts.map

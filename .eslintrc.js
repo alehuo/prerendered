@@ -28,7 +28,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'max-len': 'off',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'react/prop-types': 'off',
     'react/jsx-props-no-spreading': 'off',
     'import/extensions': 'off',

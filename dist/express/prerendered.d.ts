@@ -12,3 +12,4 @@ export declare const prerendered: () => {
     render: typeof render;
 };
 export {};
+//# sourceMappingURL=prerendered.d.ts.map
