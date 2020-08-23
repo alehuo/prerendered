@@ -3,6 +3,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const NodeExternals = require('webpack-node-externals');
 const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const prerenderedConfig = {
   mode: 'production',
@@ -60,6 +61,7 @@ const prerenderedConfig = {
     net: 'empty',
     buffer: 'empty',
   },
+  plugins: [new CleanWebpackPlugin()],
 };
 
 const cliConfig = {
@@ -124,7 +126,7 @@ const cliConfig = {
         { from: 'src/cli/tsconfig.prr.json', to: 'tsconfig.prr.json' },
       ],
     }),
-
+    new CleanWebpackPlugin(),
   ],
   externals: [NodeExternals()],
 };

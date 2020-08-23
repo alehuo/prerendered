@@ -43,7 +43,7 @@ program.command('init').description('Initialize prerendered')
           throw new Error('Error! No entrypoint given');
         }
         if (!fs.existsSync(path.join(process.cwd(), answers.entrypoint))) {
-          throw new Error('Error! Entrypoint does not exidst');
+          throw new Error('Error! Entrypoint does not exist');
         }
         const data: PrerenderedConfig = {
           client: {
@@ -67,7 +67,7 @@ program.command('build').description('Build prerendered')
         if (err.message) {
           console.error(err.message);
         }
-        throw new Error('Webpack: Failed to compile');
+        throw new Error('Error! Webpack: Failed to compile');
       }
       console.log('Webpack: Done!');
       console.log(stats.toString());

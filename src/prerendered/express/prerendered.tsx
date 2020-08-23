@@ -54,7 +54,10 @@ function render<T extends object>(data: T) {
 }
 
 export const prerendered = (app: Application) => {
-  app.use('/static', express.static(resolve(process.cwd(), '.prerendered', 'static')));
+  console.info('Starting Prerendered');
+  const staticPath = resolve(process.cwd(), '.prerendered', 'static');
+  console.info('Mapping /static path to folder %s', staticPath);
+  app.use('/static', express.static(staticPath));
   return {
     middleware: middlewareHandler,
     render,
