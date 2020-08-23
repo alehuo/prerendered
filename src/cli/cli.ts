@@ -61,13 +61,16 @@ program.command('build').description('Build prerendered')
       throw new Error('Error! prerendered.json not found. Please run `prerendered init`');
     }
     const cfg: PrerenderedConfig = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prerendered.json')).toString('utf-8'));
-    const webpackConfig = createConfig(cfg.client.entryPoint);
-    webpack(webpackConfig, (err, stats) => { // Stats Object
+    const webpackConfig = createConfig(cfg.client.entryPoint, program.debug);
+    webpack(webpackConfig, (err, stats) => {
       if (err || stats.hasErrors()) {
-        throw new Error(err.message);
-        // Handle errors here
+        if (err.message) {
+          console.error(err.message);
+        }
+        throw new Error('Webpack: Failed to compile');
       }
-      console.log('Done!');
+      console.log('Webpack: Done!');
+      console.log(stats.toString());
     });
   });
 

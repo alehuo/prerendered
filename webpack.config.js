@@ -2,6 +2,7 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const NodeExternals = require('webpack-node-externals');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const prerenderedConfig = {
   mode: 'production',
@@ -114,9 +115,16 @@ const cliConfig = {
     fs: 'empty',
     net: 'empty',
     buffer: 'empty',
+    __dirname: false,
   },
   plugins: [
     new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
+    new CopyPlugin({
+      patterns: [
+        { from: 'src/cli/tsconfig.prr.json', to: 'tsconfig.prr.json' },
+      ],
+    }),
+
   ],
   externals: [NodeExternals()],
 };

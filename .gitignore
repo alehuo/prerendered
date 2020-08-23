@@ -110,4 +110,8 @@ typings/
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+# Prerendered
+prerendered.json
+.prerendered
+
 # End of https://www.toptal.com/developers/gitignore/api/node
