@@ -2,11 +2,19 @@
 import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
+import webpack from 'webpack';
 import { program } from 'commander';
+import { createConfig } from './webpack.prerendered';
 
 program.version('0.0.1');
 
 console.log('Prerendered CLI');
+
+interface PrerenderedConfig {
+  client: {
+    entryPoint: string;
+  }
+}
 
 program
   .option('--debug, -d', 'Enable debug printing');
@@ -37,7 +45,7 @@ program.command('init').description('Initialize prerendered')
         if (!fs.existsSync(path.join(process.cwd(), answers.entrypoint))) {
           throw new Error('Error! Entrypoint does not exidst');
         }
-        const data = {
+        const data: PrerenderedConfig = {
           client: {
             entryPoint: answers.entrypoint,
           },
@@ -52,6 +60,15 @@ program.command('build').description('Build prerendered')
     if (!fs.existsSync(path.join(process.cwd(), 'prerendered.json'))) {
       throw new Error('Error! prerendered.json not found. Please run `prerendered init`');
     }
+    const cfg: PrerenderedConfig = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prerendered.json')).toString('utf-8'));
+    const webpackConfig = createConfig(cfg.client.entryPoint);
+    webpack(webpackConfig, (err, stats) => { // Stats Object
+      if (err || stats.hasErrors()) {
+        throw new Error(err.message);
+        // Handle errors here
+      }
+      console.log('Done!');
+    });
   });
 
 program.parse(process.argv);

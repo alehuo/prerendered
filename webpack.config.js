@@ -1,6 +1,7 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
+const NodeExternals = require('webpack-node-externals');
 
 const prerenderedConfig = {
   mode: 'production',
@@ -37,7 +38,7 @@ const prerenderedConfig = {
   devtool: 'source-map',
   context: __dirname,
   target: 'web',
-  externals: ['react', 'react-dom', 'react-helmet', 'crypto', 'buffer'],
+  externals: [NodeExternals()],
   optimization: {
     minimize: true,
     minimizer: [
@@ -117,6 +118,7 @@ const cliConfig = {
   plugins: [
     new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
   ],
+  externals: [NodeExternals()],
 };
 
 module.exports = [prerenderedConfig, cliConfig];
