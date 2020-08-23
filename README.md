@@ -23,9 +23,9 @@ import { Client } from '../Client/Client';
 const app = express();
 
 const prr = PrerenderedExpess(app);
-prr.middleware({
+app.use(prr.middleware({
   nonce: false,
-});
+}));
 
 app.get('/*', prr.render({
   posts: fetchPosts(),

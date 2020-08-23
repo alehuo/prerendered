@@ -1,6 +1,8 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import express, { Application, Request, Response } from 'express';
+import express, {
+  RequestHandler, Application, Request, Response,
+} from 'express';
 import { Helmet } from 'react-helmet';
 import { resolve } from 'path';
 import { Template } from '../Template';
@@ -9,11 +11,11 @@ import { cspNonceMiddleware } from './middleware/cspNonceMiddleware';
 type MiddlewareKeys = 'nonce'
 export type MiddlewareConfig = Partial<Record<MiddlewareKeys, boolean>>
 
-const middlewareHandler: (app: Application) => (config: MiddlewareConfig) => void = (app) => (config) => {
+const middlewareHandler: (config: MiddlewareConfig) => RequestHandler = (config) => (req, res, next) => {
   if (config.nonce) {
-    app.use(cspNonceMiddleware);
+    cspNonceMiddleware(req, res);
   }
-  app.use('/static', express.static(resolve(process.cwd(), '.prerendered', 'static')));
+  next();
 };
 
 type PromiseValue<T> = T extends Promise<infer U> ? U : T
@@ -51,7 +53,10 @@ function render<T extends object>(data: T) {
   };
 }
 
-export const prerendered = (app: Application) => ({
-  middleware: middlewareHandler(app),
-  render,
-});
+export const prerendered = (app: Application) => {
+  app.use('/static', express.static(resolve(process.cwd(), '.prerendered', 'static')));
+  return {
+    middleware: middlewareHandler,
+    render,
+  };
+};
