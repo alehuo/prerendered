@@ -7,8 +7,8 @@
   "tsBuildInfoFile": "./tsconfig.cli.tsbuildinfo",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./cli_dist",
-    "declarationDir": "./cli_dist",
+    "outDir": "./dist/cli",
+    "declarationDir": "./dist/cli",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,

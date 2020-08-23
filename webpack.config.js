@@ -6,7 +6,7 @@ const prerenderedConfig = {
   mode: 'production',
   entry: './src/prerendered',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist', 'lib'),
     filename: 'index.js',
     libraryTarget: 'umd',
     library: 'prerendered',
@@ -64,7 +64,7 @@ const cliConfig = {
   mode: 'production',
   entry: './src/cli/cli',
   output: {
-    path: path.resolve(__dirname, 'cli_dist'),
+    path: path.resolve(__dirname, 'dist', 'cli'),
     filename: 'cli.js',
     libraryTarget: 'umd',
     library: 'prerendered_cli',
