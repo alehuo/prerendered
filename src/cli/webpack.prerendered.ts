@@ -50,6 +50,10 @@ export const createConfig = (entry: string, debug = false) => {
         }),
       ],
     },
+    node: {
+      net: 'empty',
+      fs: 'empty',
+    },
     plugins: [
       new CleanWebpackPlugin(),
       new ManifestPlugin({
