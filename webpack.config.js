@@ -117,6 +117,7 @@ const cliConfig = {
     fs: 'empty',
     net: 'empty',
     buffer: 'empty',
+    path: 'empty',
     __dirname: false,
   },
   plugins: [
