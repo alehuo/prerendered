@@ -4,9 +4,10 @@ import { HelmetData } from 'react-helmet';
 interface TemplateProps {
   helmet: HelmetData
   markup: string;
+  prerenderedData?: string;
 }
 
-export const Template: React.FC<TemplateProps> = ({ helmet, markup }) => {
+export const Template: React.FC<TemplateProps> = ({ helmet, markup, prerenderedData = '' }) => {
   const htmlAttrs = helmet.htmlAttributes.toComponent();
   const bodyAttrs = helmet.bodyAttributes.toComponent();
   const { lang, ...otherHtmlAttrs } = htmlAttrs;
@@ -16,6 +17,7 @@ export const Template: React.FC<TemplateProps> = ({ helmet, markup }) => {
         {helmet.title.toComponent()}
         {helmet.meta.toComponent()}
         {helmet.link.toComponent()}
+        <script dangerouslySetInnerHTML={{ __html: `window.__PRERENDERED__ = '${prerenderedData}'` }} />
       </head>
       <body
         {...bodyAttrs}
