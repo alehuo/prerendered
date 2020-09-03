@@ -59,7 +59,9 @@ program.command('build').description('Build prerendered')
       throw new Error('Error! prerendered.json not found. Please run `prerendered init`');
     }
     console.log('Bunding app');
-    const cfg: PrerenderedConfig = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prerendered.json')).toString('utf-8'));
+    const cfgPath = path.join(process.cwd(), 'prerendered.json');
+    console.log('prerendered.json location: %s', cfgPath);
+    const cfg: PrerenderedConfig = JSON.parse(fs.readFileSync(cfgPath).toString('utf-8'));
     const webpackConfig = createConfig(cfg.client.entryPoint, program.debug);
     webpack(webpackConfig, (err, stats) => {
       if (err !== null || stats.hasErrors()) {
