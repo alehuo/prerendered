@@ -5,6 +5,7 @@ import express, {
 } from 'express';
 import { Helmet } from 'react-helmet';
 import { resolve } from 'path';
+import { existsSync, readFileSync } from 'fs';
 import { Template } from '../Template';
 import { cspNonceMiddleware } from './middleware/cspNonceMiddleware';
 import { encodeData } from '../encoder';
@@ -62,7 +63,18 @@ export const prerendered = (app: Application) => {
   console.info('Starting Prerendered');
   const staticPath = resolve(process.cwd(), '.prerendered', 'static');
   console.info('Mapping /static path to folder %s', staticPath);
+  const manifestPath = resolve(process.cwd(), '.prerendered', 'manifest.json');
+  console.info('Checking that manifest.json exists');
+  if (!existsSync(manifestPath)) {
+    throw new Error(`Error! ${manifestPath} does not exist. Did you forget to run "prerendered build" ?`);
+  }
+  const manifestData = readFileSync(manifestPath).toString('utf8');
+  const parsed = JSON.parse(manifestData);
   app.use('/static', express.static(staticPath));
+  app.use((_req, res, next) => {
+    res.locals.manifest = parsed;
+    next();
+  });
   return {
     middleware: middlewareHandler,
     render,
