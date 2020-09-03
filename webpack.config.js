@@ -1,7 +1,6 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
-const NodeExternals = require('webpack-node-externals');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -40,7 +39,6 @@ const prerenderedConfig = {
   devtool: 'source-map',
   context: __dirname,
   target: 'web',
-  externals: [NodeExternals()],
   optimization: {
     minimize: true,
     minimizer: [
@@ -62,6 +60,9 @@ const prerenderedConfig = {
     buffer: 'empty',
   },
   plugins: [new CleanWebpackPlugin()],
+  externals: {
+    fsevents: "require('fsevents')",
+  },
 };
 
 const cliConfig = {
@@ -128,7 +129,9 @@ const cliConfig = {
     }),
     new CleanWebpackPlugin(),
   ],
-  externals: [NodeExternals()],
+  externals: {
+    fsevents: "require('fsevents')",
+  },
 };
 
 module.exports = [prerenderedConfig, cliConfig];
