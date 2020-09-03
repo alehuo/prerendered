@@ -1,3 +1,318 @@
 #!/usr/bin/env node
-(function e(r,o){if(typeof exports==="object"&&typeof module==="object")module.exports=o();else if(typeof define==="function"&&define.amd)define("prerendered_cli",[],o);else if(typeof exports==="object")exports["prerendered_cli"]=o();else r["prerendered_cli"]=o()})(this,(function(){return function(e){var r={};function o(n){if(r[n]){return r[n].exports}var t=r[n]={i:n,l:false,exports:{}};e[n].call(t.exports,t,t.exports,o);t.l=true;return t.exports}o.m=e;o.c=r;o.d=function(e,r,n){if(!o.o(e,r)){Object.defineProperty(e,r,{enumerable:true,get:n})}};o.r=function(e){if(typeof Symbol!=="undefined"&&Symbol.toStringTag){Object.defineProperty(e,Symbol.toStringTag,{value:"Module"})}Object.defineProperty(e,"__esModule",{value:true})};o.t=function(e,r){if(r&1)e=o(e);if(r&8)return e;if(r&4&&typeof e==="object"&&e&&e.__esModule)return e;var n=Object.create(null);o.r(n);Object.defineProperty(n,"default",{enumerable:true,value:e});if(r&2&&typeof e!="string")for(var t in e)o.d(n,t,function(r){return e[r]}.bind(null,t));return n};o.n=function(e){var r=e&&e.__esModule?function r(){return e["default"]}:function r(){return e};o.d(r,"a",r);return r};o.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)};o.p="";return o(o.s=1)}([function(e,r){e.exports=require("path")},function(e,r,o){"use strict";var n=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(r,"__esModule",{value:true});var t=n(o(2));var i=n(o(0));var s=n(o(3));var a=n(o(4));var u=o(5);var l=o(6);u.program.version("0.0.1");u.program.option("--debug, -d","Enable debug printing");u.program.command("init").description("Initialize prerendered").action((function(e,r){if(t.default.existsSync(i.default.join(process.cwd(),"prerendered.json"))){throw new Error("Error! prerendered.json already exists. Please delete it before proceeding.")}console.log("Thank you for using prerendered. I will now ask a few questions about your app.");console.log("A configuration file will be created to the project root which is used by the build command.");console.log("The folder I will use as a base will be "+process.cwd());var o=[{type:"input",name:"entrypoint",message:"What is your client entrypoint? (Current working dir: "+process.cwd()+")"}];s.default.prompt(o).then((function(e){if(e.entrypoint===""){throw new Error("Error! No entrypoint given")}if(!t.default.existsSync(i.default.join(process.cwd(),e.entrypoint))){throw new Error("Error! Entrypoint does not exist")}var r={client:{entryPoint:e.entrypoint}};t.default.writeFileSync(i.default.join(process.cwd(),"prerendered.json"),JSON.stringify(r,null,2));console.log("Created prerendered.json")}))}));u.program.command("build").description("Build prerendered").action((function(e,r){if(!t.default.existsSync(i.default.join(process.cwd(),"prerendered.json"))){throw new Error("Error! prerendered.json not found. Please run `prerendered init`")}console.log("Bunding app");var o=i.default.join(process.cwd(),"prerendered.json");console.log("prerendered.json location: %s",o);var n=JSON.parse(t.default.readFileSync(o).toString("utf-8"));var s=l.createConfig(n.client.entryPoint,u.program.debug);a.default(s,(function(e,r){if(e!==null||r.hasErrors()){if(e!==null&&e.message){console.error(e.message)}if(r.hasErrors()){var o=r.toJson();o.errors.map(console.error)}throw new Error("Error! Webpack: Failed to compile")}var n=r.toJson();if(r.hasErrors()){n.errors.map(console.error)}if(r.hasWarnings()){n.warnings.map(console.warn)}console.log("Webpack: Done!")}))}));u.program.parse(process.argv)},function(e,r){e.exports=require("fs")},function(e,r){e.exports=require("inquirer")},function(e,r){e.exports=require("webpack")},function(e,r){e.exports=require("commander")},function(e,r,o){"use strict";var n=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(r,"__esModule",{value:true});r.createConfig=void 0;var t=o(0);var i=n(o(7));var s=o(8);var a=n(o(9));r.createConfig=function(e,r){if(r===void 0){r=false}var o="static";var n=t.resolve(__dirname,"tsconfig.prr.json");var u={mode:"production",entry:t.resolve(process.cwd(),e),output:{path:t.resolve(process.cwd(),".prerendered",o),filename:"[name].[contenthash].js",chunkFilename:"[id]-[chunkhash].js"},module:{rules:[{test:/\.tsx?$/,exclude:[/node_modules/],include:[t.resolve(process.cwd(),t.dirname(e))],loader:"ts-loader",options:{configFile:n}}]},resolve:{extensions:[".js",".jsx",".ts",".tsx"]},devtool:"source-map",target:"web",optimization:{minimize:true,minimizer:[new i.default({parallel:true,terserOptions:{compress:false,ecma:6,mangle:true},sourceMap:true,test:/\.js(\?.*)?$/i})]},node:{net:"empty",fs:"empty"},plugins:[new s.CleanWebpackPlugin,new a.default({publicPath:o+"/",fileName:t.resolve(process.cwd(),".prerendered","manifest.json")})]};if(r){console.log("tsconfig.prr.json: %s",n);console.log("Path prefix: %s",o);console.log("Webpack configuration: %s",JSON.stringify(u,null,2))}return u}},function(e,r){e.exports=require("terser-webpack-plugin")},function(e,r){e.exports=require("clean-webpack-plugin")},function(e,r){e.exports=require("webpack-manifest-plugin")}])}));
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define("prerendered_cli", [], factory);
+	else if(typeof exports === 'object')
+		exports["prerendered_cli"] = factory();
+	else
+		root["prerendered_cli"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable no-console */
+var fs_1 = __importDefault(__webpack_require__(2));
+var path_1 = __importDefault(__webpack_require__(0));
+var inquirer_1 = __importDefault(__webpack_require__(3));
+var webpack_1 = __importDefault(__webpack_require__(4));
+var commander_1 = __webpack_require__(5);
+var webpack_prerendered_1 = __webpack_require__(6);
+commander_1.program.version('0.0.1');
+commander_1.program
+    .option('--debug, -d', 'Enable debug printing');
+commander_1.program.command('init').description('Initialize prerendered')
+    .action(function (_source, _destination) {
+    if (fs_1.default.existsSync(path_1.default.join(process.cwd(), 'prerendered.json'))) {
+        throw new Error('Error! prerendered.json already exists. Please delete it before proceeding.');
+    }
+    console.log('Thank you for using prerendered. I will now ask a few questions about your app.');
+    console.log('A configuration file will be created to the project root which is used by the build command.');
+    console.log("The folder I will use as a base will be " + process.cwd());
+    var questions = [
+        {
+            type: 'input', name: 'entrypoint',
+            message: "What is your client entrypoint? (Current working dir: " + process.cwd() + ")",
+        },
+    ];
+    inquirer_1.default
+        .prompt(questions)
+        .then(function (answers) {
+        if (answers.entrypoint === '') {
+            throw new Error('Error! No entrypoint given');
+        }
+        if (!fs_1.default.existsSync(path_1.default.join(process.cwd(), answers.entrypoint))) {
+            throw new Error('Error! Entrypoint does not exist');
+        }
+        var data = {
+            client: {
+                entryPoint: answers.entrypoint,
+            },
+        };
+        fs_1.default.writeFileSync(path_1.default.join(process.cwd(), 'prerendered.json'), JSON.stringify(data, null, 2));
+        console.log('Created prerendered.json');
+    });
+});
+commander_1.program.command('build').description('Build prerendered')
+    .action(function (_source, _destination) {
+    if (!fs_1.default.existsSync(path_1.default.join(process.cwd(), 'prerendered.json'))) {
+        throw new Error('Error! prerendered.json not found. Please run `prerendered init`');
+    }
+    console.log('Bunding app');
+    var cfgPath = path_1.default.join(process.cwd(), 'prerendered.json');
+    console.log('prerendered.json location: %s', cfgPath);
+    var cfg = JSON.parse(fs_1.default.readFileSync(cfgPath).toString('utf-8'));
+    var webpackConfig = webpack_prerendered_1.createConfig(cfg.client.entryPoint, commander_1.program.debug);
+    webpack_1.default(webpackConfig, function (err, stats) {
+        if (err !== null || stats.hasErrors()) {
+            if (err !== null && err.message) {
+                console.error(err.message);
+            }
+            if (stats.hasErrors()) {
+                var info_1 = stats.toJson();
+                info_1.errors.map(console.error);
+            }
+            throw new Error('Error! Webpack: Failed to compile');
+        }
+        var info = stats.toJson();
+        if (stats.hasErrors()) {
+            info.errors.map(console.error);
+        }
+        if (stats.hasWarnings()) {
+            info.warnings.map(console.warn);
+        }
+        console.log('Webpack: Done!');
+    });
+});
+commander_1.program.parse(process.argv);
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("inquirer");
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = require("webpack");
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("commander");
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createConfig = void 0;
+var path_1 = __webpack_require__(0);
+var terser_webpack_plugin_1 = __importDefault(__webpack_require__(7));
+var clean_webpack_plugin_1 = __webpack_require__(8);
+var webpack_manifest_plugin_1 = __importDefault(__webpack_require__(9));
+exports.createConfig = function (entry, debug) {
+    if (debug === void 0) { debug = false; }
+    var pathPrefix = 'static';
+    var tsConfigPath = path_1.resolve(__dirname, 'tsconfig.prr.json');
+    var config = {
+        mode: 'production',
+        entry: path_1.resolve(process.cwd(), entry),
+        output: {
+            path: path_1.resolve(process.cwd(), '.prerendered', pathPrefix),
+            filename: '[name].[contenthash].js',
+            chunkFilename: '[id]-[chunkhash].js',
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.tsx?$/,
+                    exclude: [
+                        /node_modules/,
+                    ],
+                    include: [path_1.resolve(process.cwd(), path_1.dirname(entry))],
+                    loader: 'ts-loader',
+                    options: {
+                        configFile: tsConfigPath,
+                    },
+                },
+            ],
+        },
+        resolve: {
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
+        devtool: 'source-map',
+        target: 'web',
+        optimization: {
+            minimize: true,
+            minimizer: [
+                new terser_webpack_plugin_1.default({
+                    parallel: true,
+                    terserOptions: {
+                        compress: false,
+                        ecma: 6,
+                        mangle: true,
+                    },
+                    sourceMap: true,
+                    test: /\.js(\?.*)?$/i,
+                }),
+            ],
+        },
+        node: {
+            net: 'empty',
+            fs: 'empty',
+        },
+        plugins: [
+            new clean_webpack_plugin_1.CleanWebpackPlugin(),
+            new webpack_manifest_plugin_1.default({
+                publicPath: pathPrefix + "/",
+                fileName: path_1.resolve(process.cwd(), '.prerendered', 'manifest.json'),
+            }),
+        ],
+    };
+    if (debug) {
+        console.log('tsconfig.prr.json: %s', tsConfigPath);
+        console.log('Path prefix: %s', pathPrefix);
+        console.log('Webpack configuration: %s', JSON.stringify(config, null, 2));
+    }
+    return config;
+};
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = require("terser-webpack-plugin");
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = require("clean-webpack-plugin");
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("webpack-manifest-plugin");
+
+/***/ })
+/******/ ]);
+});
 //# sourceMappingURL=cli.js.map

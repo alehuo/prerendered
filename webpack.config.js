@@ -42,14 +42,14 @@ const prerenderedConfig = {
   target: 'web',
   externals: [NodeExternals()],
   optimization: {
-    minimize: true,
+    minimize: false,
     minimizer: [
       new TerserPlugin({
         parallel: true,
         terserOptions: {
           compress: false,
           ecma: 6,
-          mangle: true,
+          mangle: false,
         },
         sourceMap: true,
         test: /\.js(\?.*)?$/i,
@@ -99,14 +99,14 @@ const cliConfig = {
   context: __dirname,
   target: 'node',
   optimization: {
-    minimize: true,
+    minimize: false,
     minimizer: [
       new TerserPlugin({
         parallel: true,
         terserOptions: {
           compress: false,
           ecma: 6,
-          mangle: true,
+          mangle: false,
         },
         sourceMap: true,
         test: /\.js(\?.*)?$/i,
