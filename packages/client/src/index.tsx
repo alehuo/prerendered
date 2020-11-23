@@ -1,7 +1,10 @@
 import React, { useContext } from "react";
 import { getPrerenderedData } from "@prerendered/shared";
 
-const data = getPrerenderedData();
+const data =
+  typeof window !== "undefined" && window.__PRERENDERED__ !== undefined
+    ? getPrerenderedData()
+    : {};
 const SSRContext_ = React.createContext(data);
 
 type Props = {
