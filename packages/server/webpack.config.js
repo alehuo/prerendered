@@ -7,12 +7,8 @@ const prerenderedConfig = {
   mode: 'production',
   entry: './src/index',
   output: {
-    path: path.resolve(__dirname, 'dist', 'lib'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
-    libraryTarget: 'umd',
-    library: 'prerendered',
-    umdNamedDefine: true,
-    globalObject: 'this',
   },
   module: {
     rules: [
