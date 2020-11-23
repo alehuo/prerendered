@@ -11,8 +11,8 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "./dist/lib",
-    "outDir": "./dist/lib",
+    "declarationDir": "./dist",
+    "outDir": "./dist",
   },
   "include": [
     "src/**/*.ts",
