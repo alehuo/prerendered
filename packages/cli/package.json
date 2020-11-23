@@ -1,10 +1,12 @@
 {
   "name": "@prerendered/cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/cli.js",
   "typings": "dist/cli.d.ts",
-  "bin": {},
+  "bin": {
+    "prerendered": "dist/cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress --mode=production"
