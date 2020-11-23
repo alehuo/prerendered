@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.json",
+  "lib": [
+    "es2015",
+  ],
+  "rootDir": "./src",
+  "tsBuildInfoFile": "../../tsconfig.cli.tsbuildinfo",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "declarationDir": "./dist",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.json",
+  "lib": [
+    "es2015",
+    "dom"
+  ],
+  "rootDir": "./src",
+  "tsBuildInfoFile": "../../tsconfig.prerendered.tsbuildinfo",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "./dist/lib",
+    "outDir": "./dist/lib",
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+  ],
+}

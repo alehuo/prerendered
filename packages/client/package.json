@@ -1,0 +1,34 @@
+{
+  "name": "@prerendered/client",
+  "version": "1.0.2",
+  "description": "",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --progress"
+  },
+  "keywords": [],
+  "author": {
+    "email": "alehuo@alehuo.dev",
+    "name": "Aleksi Huotala"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@prerendered/shared": "^1.0.0",
+    "cbor": "^5.1.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/cbor": "^5.0.1",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "terser-webpack-plugin": "^4.2.3",
+    "ts-loader": "^8.0.11",
+    "typescript": "^4.1.2",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^4.2.0"
+  }
+}

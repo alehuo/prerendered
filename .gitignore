@@ -114,4 +114,7 @@ typings/
 prerendered.json
 .prerendered
 
+dist
+
+.vscode
 # End of https://www.toptal.com/developers/gitignore/api/node

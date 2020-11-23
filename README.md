@@ -11,8 +11,10 @@ Prerendered is an SSR toolkit which handles the following:
 
 ## How to get started
 
-1. Run `npm install -g prerendered`
-2. Run `prerendered init` and set your App's entrypoint **(The file that calls ReactDOM.hydrate)**.
+1. Run `npm install -g @prerendered/cli`
+2. Run `prerendered init` and set your App's entry point **(The file that calls ReactDOM.hydrate)**.
+3. Run `npm install --save @prerendered/client` in your front-end repository
+4. Run `npm install --save @prerendered/server` in your back-end repository which hosts the front-end app
 
 ## Example
 
