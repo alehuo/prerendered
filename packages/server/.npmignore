@@ -1,0 +1,6 @@
+test
+src
+*.sh
+webpack.config.js
+.eslintrc.js
+tsconfig.prerendered.json

@@ -1,10 +1,7 @@
 const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
-const NodeExternals = require('webpack-node-externals');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const prerenderedConfig = {
-  mode: 'production',
   entry: './src/index',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -16,40 +13,54 @@ const prerenderedConfig = {
         test: /\.tsx?$/,
         include: [path.resolve(__dirname, 'src')],
         exclude: [/node_modules/, /cli/],
-        loader: 'ts-loader',
-        options: {
-          configFile: 'tsconfig.prerendered.json',
-        },
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: [
+                '@babel/proposal-class-properties',
+                '@babel/proposal-object-rest-spread',
+              ],
+              presets: [
+                [
+                  '@babel/preset-react',
+                  {
+                    runtime: 'automatic',
+                  },
+                ],
+                [
+                  '@babel/preset-env',
+                  {
+                    modules: false,
+                    useBuiltIns: 'usage',
+                    corejs: '3.8',
+                  },
+                ],
+              ],
+            },
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: 'tsconfig.prerendered.json',
+            },
+          },
+        ],
       },
     ],
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    fallback: {
+      util: require.resolve('util'),
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer'),
+      url: require.resolve('url'),
+    },
   },
   devtool: 'source-map',
   context: __dirname,
-  target: 'web',
-  externals: [NodeExternals()],
-  optimization: {
-    minimize: false,
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          compress: false,
-          ecma: 2016,
-          mangle: false,
-          sourceMap: true,
-        },
-        test: /\.js(\?.*)?$/i,
-      }),
-    ],
-  },
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    buffer: 'empty',
-  },
+  target: 'node',
   plugins: [new CleanWebpackPlugin()],
 };
 
