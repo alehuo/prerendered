@@ -1,8 +1,7 @@
 import { dirname, resolve } from "path";
-import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import ManifestPlugin from "webpack-manifest-plugin";
+import { WebpackManifestPlugin } from "webpack-manifest-plugin";
 
 export const createConfig = (entry: string, debug = false) => {
   const pathPrefix = "static";
@@ -21,40 +20,54 @@ export const createConfig = (entry: string, debug = false) => {
           test: /\.tsx?$/,
           exclude: [/node_modules/],
           include: [resolve(process.cwd(), dirname(entry))],
-          loader: "ts-loader",
-          options: {
-            configFile: tsConfigPath,
-          },
+          use: [
+            {
+              loader: "babel-loader",
+              options: {
+                presets: [
+                  [
+                    "@babel/preset-react",
+                    {
+                      runtime: "automatic",
+                    },
+                  ],
+                  [
+                    "@babel/preset-env",
+                    {
+                      modules: false,
+                      useBuiltIns: "usage",
+                      corejs: "3.8",
+                    },
+                  ],
+                ],
+              },
+            },
+            {
+              loader: "ts-loader",
+              options: {
+                configFile: tsConfigPath,
+              },
+            },
+          ],
         },
       ],
     },
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx"],
+      fallback: {
+        util: require.resolve("util"),
+        stream: require.resolve("stream-browserify"),
+        buffer: require.resolve("buffer"),
+        url: require.resolve("url"),
+      },
     },
     devtool: "source-map",
-    target: "web",
-    optimization: {
-      minimize: false,
-      minimizer: [
-        new TerserPlugin({
-          parallel: true,
-          terserOptions: {
-            compress: false,
-            ecma: 2016,
-            mangle: false,
-            sourceMap: true,
-          },
-          test: /\.js(\?.*)?$/i,
-        }),
-      ],
-    },
-    node: {
-      net: "empty",
-      fs: "empty",
-    },
+    target: "node",
     plugins: [
+      // @ts-expect-error
       new CleanWebpackPlugin(),
-      new ManifestPlugin({
+      // @ts-expect-error
+      new WebpackManifestPlugin({
         publicPath: `${pathPrefix}/`,
         fileName: resolve(process.cwd(), ".prerendered", "manifest.json"),
       }),
