@@ -3,7 +3,6 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const clientConfig = {
   target: "web",
-  mode: "production",
   entry: "./src/index",
   output: {
     path: path.resolve(__dirname, "dist"),
