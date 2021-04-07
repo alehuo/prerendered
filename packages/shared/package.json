@@ -1,26 +1,35 @@
 {
   "name": "@prerendered/shared",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --progress"
+    "build": "webpack --progress --mode production"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.13.14",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-react": "^7.13.13",
     "@types/cbor": "^5.0.1",
+    "babel-loader": "^8.2.2",
+    "buffer": "^6.0.3",
     "clean-webpack-plugin": "^3.0.0",
-    "terser-webpack-plugin": "^4.2.3",
-    "ts-loader": "^8.0.11",
-    "typescript": "^4.1.2",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^4.2.0"
+    "core-js": "^3.10.0",
+    "stream-browserify": "^3.0.0",
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.3",
+    "url": "^0.11.0",
+    "util": "^0.12.3",
+    "webpack": "^5.31.0",
+    "webpack-cli": "^4.6.0"
   },
   "dependencies": {
-    "cbor": "^5.1.0"
-  }
+    "cbor": "^5.2.0"
+  },
+  "browserslist": "> 0.25%, not dead"
 }

@@ -1,5 +1,4 @@
 const path = require("path");
-const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const sharedConfig = {
@@ -16,34 +15,49 @@ const sharedConfig = {
         test: /\.tsx?$/,
         include: [path.resolve(__dirname, "src")],
         exclude: [/node_modules/],
-        loader: "ts-loader",
-        options: {
-          configFile: "tsconfig.shared.json",
-          
-        },
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [
+                [
+                  "@babel/preset-react",
+                  {
+                    runtime: "automatic",
+                  },
+                ],
+                [
+                  "@babel/preset-env",
+                  {
+                    modules: false,
+                    useBuiltIns: "usage",
+                    corejs: "3.8",
+                  },
+                ],
+              ],
+            },
+          },
+          {
+            loader: "ts-loader",
+            options: {
+              configFile: "tsconfig.shared.json",
+            },
+          },
+        ],
       },
     ],
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
+    fallback: {
+      util: require.resolve('util'),
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer'),
+      url: require.resolve('url'),
+    },
   },
   devtool: "source-map",
   context: __dirname,
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          compress: false,
-          ecma: 2016,
-          mangle: false,
-          sourceMap: true,
-        },
-        test: /\.js(\?.*)?$/i,
-      }),
-    ],
-  },
   plugins: [new CleanWebpackPlugin()],
 };
 
