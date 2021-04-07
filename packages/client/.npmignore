@@ -1,3 +1,5 @@
 webpack.config.js
 tsconfig.client.json
-src/**/*
+src
+test
+*.tgz

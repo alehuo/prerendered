@@ -1,7 +1,7 @@
 *.sh
 webpack.config.js
 .eslintrc.js
-tsconfig.prerendered.json
+tsconfig.cli.json
 src
 test
 *.tgz
